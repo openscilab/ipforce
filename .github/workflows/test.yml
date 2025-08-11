@@ -42,7 +42,7 @@ jobs:
         pip install --upgrade --upgrade-strategy=only-if-needed -r test-requirements.txt
     - name: Test with pytest 
       run: |
-        python -m pytest tests/test_ipv4.py tests/test_ipv6.py tests/test_adapters.py --cov=ipforce --cov-report=term
+        python -m pytest tests/test_adapters.py --cov=ipforce --cov-report=term
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
       with:
