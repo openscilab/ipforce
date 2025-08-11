@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- Test system
+- IPv6HTTPAdapter
+- IPv4HTTPAdapter
 ### Changed
 
 [Unreleased]: https://github.com/openscilab/ipforce/compare/TODO...v0.1
