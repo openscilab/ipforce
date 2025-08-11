@@ -1,8 +1,6 @@
 [run]
 branch = True
 omit =
-    */ipforce/cli.py
-    */ipforce/__main__.py
     */ipforce/__init__.py
 [report]
 # Regexes for lines to exclude from consideration
