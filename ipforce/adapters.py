@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""IPForce Adapters to force IPv4 or IPv6 for requests."""
 import socket
 from typing import List, Tuple
 from urllib3 import PoolManager
@@ -9,6 +11,7 @@ class IPv4TransportAdapter(HTTPAdapter):
     def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **kwargs: dict) -> None:
         """
         Initialize the connection pool manager using a temporary override of socket.getaddrinfo to ensure only IPv4 addresses are used.
+
         This is necessary to ensure that the requests library uses IPv4 addresses for DNS resolution, which is required for some APIs.
         :param connections: the number of connection pools to cache
         :param maxsize: the maximum number of connections to save in the pool
@@ -52,6 +55,7 @@ class IPv6TransportAdapter(HTTPAdapter):
     def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **kwargs: dict) -> None:
         """
         Initialize the connection pool manager using a temporary override of socket.getaddrinfo to ensure only IPv6 addresses are used.
+
         This is necessary to ensure that the requests library uses IPv6 addresses for DNS resolution, which is required for some APIs.
         :param connections: the number of connection pools to cache
         :param maxsize: the maximum number of connections to save in the pool
