@@ -1,6 +1,6 @@
 import requests
 import ipaddress
-from ipforce import IPv4HTTPAdapter
+from ipforce import IPv4TransportAdapter
 
 
 def is_ipv4(ip: str) -> bool:
@@ -24,7 +24,7 @@ def test_ipv4_adapter():
     
     # Create a session with IPv4 adapter
     with requests.Session() as session:
-        ipv4Addapter = IPv4HTTPAdapter()
+        ipv4Addapter = IPv4TransportAdapter()
         session.mount('http://', ipv4Addapter)
         session.mount('https://', ipv4Addapter)
         # This will only resolve to IPv4 addresses

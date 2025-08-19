@@ -1,7 +1,7 @@
 import unittest
 import socket
 from unittest.mock import patch
-from ipforce.adapters import IPv4HTTPAdapter, IPv6HTTPAdapter
+from ipforce.adapters import IPv4TransportAdapter, IPv6TransportAdapter
 
 
 class TestIPv4Adapter(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestIPv4Adapter(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.adapter = IPv4HTTPAdapter()
+        self.adapter = IPv4TransportAdapter()
 
     def test_ipv4_socket_options(self):
         """Test that IPv4 adapter filters only IPv4 addresses."""
@@ -49,7 +49,7 @@ class TestIPv6Adapter(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
-        self.adapter = IPv6HTTPAdapter()
+        self.adapter = IPv6TransportAdapter()
 
     def test_ipv6_socket_options(self):
         """Test that IPv6 adapter filters only IPv6 addresses."""
@@ -90,8 +90,8 @@ class TestAdapterIntegration(unittest.TestCase):
 
     def test_both_adapters_independent(self):
         """Test that both adapters can coexist without interference."""
-        ipv4_adapter = IPv4HTTPAdapter()
-        ipv6_adapter = IPv6HTTPAdapter()
+        ipv4_adapter = IPv4TransportAdapter()
+        ipv6_adapter = IPv6TransportAdapter()
 
         # Both should be able to patch independently
         ipv4_adapter._ipv4_socket_options()

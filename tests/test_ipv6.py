@@ -1,6 +1,6 @@
 import requests
 import ipaddress
-from ipforce import IPv6HTTPAdapter
+from ipforce import IPv6TransportAdapter
 
 
 def is_ipv6(ip: str) -> bool:
@@ -24,7 +24,7 @@ def test_ipv6_adapter():
     
     # Create a session with IPv6 adapter
     with requests.Session() as session:
-        ipv6Addapter = IPv6HTTPAdapter()
+        ipv6Addapter = IPv6TransportAdapter()
         session.mount('http://', ipv6Addapter)
         session.mount('https://', ipv6Addapter)
         # This will only resolve to IPv6 addresses

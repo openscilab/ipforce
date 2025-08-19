@@ -63,12 +63,12 @@
 
 ```python
 import requests
-from ipforce import IPv4HTTPAdapter
+from ipforce import IPv4TransportAdapter
 
 # Create a session that will only use IPv4 addresses
 session = requests.Session()
-session.mount('http://', IPv4HTTPAdapter())
-session.mount('https://', IPv4HTTPAdapter())
+session.mount('http://', IPv4TransportAdapter())
+session.mount('https://', IPv4TransportAdapter())
 
 # All requests through this session will only resolve to IPv4 addresses
 response = session.get('https://ifconfig.co/json')
@@ -78,12 +78,12 @@ response = session.get('https://ifconfig.co/json')
 
 ```python
 import requests
-from ipforce import IPv6HTTPAdapter
+from ipforce import IPv6TransportAdapter
 
 # Create a session that will only use IPv6 addresses
 session = requests.Session()
-session.mount('http://', IPv6HTTPAdapter())
-session.mount('https://', IPv6HTTPAdapter())
+session.mount('http://', IPv6TransportAdapter())
+session.mount('https://', IPv6TransportAdapter())
 
 # All requests through this session will only resolve to IPv6 addresses
 response = session.get('https://ifconfig.co/json')

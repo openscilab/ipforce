@@ -3,7 +3,7 @@ from typing import List, Tuple
 from urllib3 import PoolManager
 from requests.adapters import HTTPAdapter
 
-class IPv4HTTPAdapter(HTTPAdapter):
+class IPv4TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv4 for DNS resolution during HTTP(S) requests using the requests library."""
 
     def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **kwargs: dict) -> None:
@@ -46,7 +46,7 @@ class IPv4HTTPAdapter(HTTPAdapter):
             socket.getaddrinfo = self._original_getaddrinfo
 
 
-class IPv6HTTPAdapter(HTTPAdapter):
+class IPv6TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv6 for DNS resolution during HTTP(S) requests using the requests library."""
 
     def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **kwargs: dict) -> None:
