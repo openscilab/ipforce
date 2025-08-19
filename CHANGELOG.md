@@ -11,5 +11,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - IPv6TransportAdapter
 - IPv4TransportAdapter
 
-[Unreleased]: https://github.com/openscilab/ipspot/compare/v0.1...dev
-[0.1]: https://github.com/openscilab/ipspot/compare/7128b04...v0.1
+[Unreleased]: https://github.com/openscilab/ipforce/compare/v0.1...dev
+[0.1]: https://github.com/openscilab/ipforce/compare/7128b04...v0.1
