@@ -1,87 +1,113 @@
 import unittest
 import socket
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from ipforce.adapters import IPv4TransportAdapter, IPv6TransportAdapter
 
 
 class TestIPv4Adapter(unittest.TestCase):
-    """Test cases for IPv4HTTPAdapter."""
+    """Test cases for IPv4TransportAdapter."""
 
     def setUp(self):
         """Set up test fixtures."""
         self.adapter = IPv4TransportAdapter()
 
-    def test_ipv4_socket_options(self):
-        """Test that IPv4 adapter filters only IPv4 addresses."""
-        # Mock socket.getaddrinfo to return mixed results
+    def test_ipv4_filtering_during_send(self):
+        """Test that IPv4 adapter filters only IPv4 addresses during send."""
         mock_results = [
             (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('192.168.1.1', 80)),  # IPv4
             (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', 80)),         # IPv6
             (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('10.0.0.1', 80)),     # IPv4
         ]
-        
-        with patch('socket.getaddrinfo', return_value=mock_results):
-            # Call the method that patches socket.getaddrinfo
-            self.adapter._ipv4_socket_options()
-            # Test that the patched function filters correctly
-            results = socket.getaddrinfo('example.com', 80)
-            self.assertEqual(len(results), 2)  # Only IPv4 results
-            for result in results:
-                self.assertEqual(result[0], socket.AF_INET)
 
-    def test_cleanup(self):
-        """Test that the adapter properly restores original getaddrinfo."""
         original_getaddrinfo = socket.getaddrinfo
-        self.adapter._ipv4_socket_options()
-        
-        # Verify it was patched
-        self.assertNotEqual(socket.getaddrinfo, original_getaddrinfo)
-        
-        # Clean up
-        self.adapter.__del__()
-        
-        # Verify it was restored
+        captured_results = []
+
+        def mock_super_send(*args, **kwargs):
+            # Capture the filtered results during send
+            captured_results.extend(socket.getaddrinfo('example.com', 80))
+            return MagicMock()
+
+        with patch('socket.getaddrinfo', return_value=mock_results):
+            with patch.object(IPv4TransportAdapter.__bases__[0], 'send', mock_super_send):
+                self.adapter.send(MagicMock())
+
+        # Only IPv4 results should be captured
+        self.assertEqual(len(captured_results), 2)
+        for result in captured_results:
+            self.assertEqual(result[0], socket.AF_INET)
+
+    def test_cleanup_after_send(self):
+        """Test that the adapter properly restores original getaddrinfo after send."""
+        original_getaddrinfo = socket.getaddrinfo
+
+        with patch.object(IPv4TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
+            self.adapter.send(MagicMock())
+
+        # Verify it was restored after send
+        self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
+
+    def test_cleanup_on_exception(self):
+        """Test that the adapter restores original getaddrinfo even if send raises."""
+        original_getaddrinfo = socket.getaddrinfo
+
+        with patch.object(IPv4TransportAdapter.__bases__[0], 'send', side_effect=Exception("Test error")):
+            with self.assertRaises(Exception):
+                self.adapter.send(MagicMock())
+
+        # Verify it was restored even after exception
         self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
 
 
 class TestIPv6Adapter(unittest.TestCase):
-    """Test cases for IPv6HTTPAdapter."""
+    """Test cases for IPv6TransportAdapter."""
 
     def setUp(self):
         """Set up test fixtures."""
         self.adapter = IPv6TransportAdapter()
 
-    def test_ipv6_socket_options(self):
-        """Test that IPv6 adapter filters only IPv6 addresses."""
-        # Mock socket.getaddrinfo to return mixed results
+    def test_ipv6_filtering_during_send(self):
+        """Test that IPv6 adapter filters only IPv6 addresses during send."""
         mock_results = [
             (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('192.168.1.1', 80)),  # IPv4
             (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', 80)),         # IPv6
             (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('2001:db8::1', 80)), # IPv6
         ]
-        
-        with patch('socket.getaddrinfo', return_value=mock_results):
-            # Call the method that patches socket.getaddrinfo
-            self.adapter._ipv6_socket_options()
-            
-            # Test that the patched function filters correctly
-            results = socket.getaddrinfo('example.com', 80)
-            self.assertEqual(len(results), 2)  # Only IPv6 results
-            for result in results:
-                self.assertEqual(result[0], socket.AF_INET6)
 
-    def test_cleanup(self):
-        """Test that the adapter properly restores original getaddrinfo."""
+        captured_results = []
+
+        def mock_super_send(*args, **kwargs):
+            # Capture the filtered results during send
+            captured_results.extend(socket.getaddrinfo('example.com', 80))
+            return MagicMock()
+
+        with patch('socket.getaddrinfo', return_value=mock_results):
+            with patch.object(IPv6TransportAdapter.__bases__[0], 'send', mock_super_send):
+                self.adapter.send(MagicMock())
+
+        # Only IPv6 results should be captured
+        self.assertEqual(len(captured_results), 2)
+        for result in captured_results:
+            self.assertEqual(result[0], socket.AF_INET6)
+
+    def test_cleanup_after_send(self):
+        """Test that the adapter properly restores original getaddrinfo after send."""
         original_getaddrinfo = socket.getaddrinfo
-        self.adapter._ipv6_socket_options()
-        
-        # Verify it was patched
-        self.assertNotEqual(socket.getaddrinfo, original_getaddrinfo)
-        
-        # Clean up
-        self.adapter.__del__()
-        
-        # Verify it was restored
+
+        with patch.object(IPv6TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
+            self.adapter.send(MagicMock())
+
+        # Verify it was restored after send
+        self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
+
+    def test_cleanup_on_exception(self):
+        """Test that the adapter restores original getaddrinfo even if send raises."""
+        original_getaddrinfo = socket.getaddrinfo
+
+        with patch.object(IPv6TransportAdapter.__bases__[0], 'send', side_effect=Exception("Test error")):
+            with self.assertRaises(Exception):
+                self.adapter.send(MagicMock())
+
+        # Verify it was restored even after exception
         self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
 
 
@@ -92,11 +118,26 @@ class TestAdapterIntegration(unittest.TestCase):
         """Test that both adapters can coexist without interference."""
         ipv4_adapter = IPv4TransportAdapter()
         ipv6_adapter = IPv6TransportAdapter()
+        original_getaddrinfo = socket.getaddrinfo
 
-        # Both should be able to patch independently
-        ipv4_adapter._ipv4_socket_options()
-        ipv6_adapter._ipv6_socket_options()
+        with patch.object(IPv4TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
+            ipv4_adapter.send(MagicMock())
 
-        # Clean up both
-        ipv4_adapter.__del__()
-        ipv6_adapter.__del__()
+        with patch.object(IPv6TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
+            ipv6_adapter.send(MagicMock())
+
+        # Verify original is still intact
+        self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
+
+    def test_sequential_sends_restore_correctly(self):
+        """Test that multiple sequential sends properly restore getaddrinfo."""
+        adapter = IPv4TransportAdapter()
+        original_getaddrinfo = socket.getaddrinfo
+
+        with patch.object(IPv4TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
+            adapter.send(MagicMock())
+            adapter.send(MagicMock())
+            adapter.send(MagicMock())
+
+        # Verify original is still intact after multiple sends
+        self.assertEqual(socket.getaddrinfo, original_getaddrinfo)
