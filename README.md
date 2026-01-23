@@ -61,6 +61,8 @@
 ## Usage
 ### Enforce IPv4
 
+Use when you need to ensure connections only use IPv4 addresses, useful for legacy systems that don't support IPv6, networks with IPv4-only infrastructure, or testing IPv4 connectivity.
+
 ```python
 import requests
 from ipforce import IPv4TransportAdapter
@@ -76,6 +78,8 @@ response = session.get('https://ifconfig.co/json')
 
 ### Enforce IPv6
 
+Use when you need to ensure connections only use IPv6 addresses, useful for modern networks with IPv6 infrastructure, testing IPv6 connectivity, or applications requiring IPv6-specific features.
+
 ```python
 import requests
 from ipforce import IPv6TransportAdapter
@@ -89,23 +93,9 @@ session.mount('https://', IPv6TransportAdapter())
 response = session.get('https://ifconfig.co/json')
 ```
 
-### When to Use
-
-- **IPv4 Adapter**: Use when you need to ensure connections only use IPv4 addresses, useful for:
-  - Legacy systems that don't support IPv6
-  - Networks with IPv4-only infrastructure
-  - Testing IPv4 connectivity
-  
-- **IPv6 Adapter**: Use when you need to ensure connections only use IPv6 addresses, useful for:
-  - Modern networks with IPv6 infrastructure
-  - Testing IPv6 connectivity
-  - Applications requiring IPv6-specific features
-
 ### ⚠️ Important: Thread Safety Warning
 
 **Current adapters are NOT thread-safe!** They modify the global `socket.getaddrinfo` function, which can cause issues in multi-threaded applications.
-
-**Future releases will include thread-safe alternatives.**
 
 ## Issues & Bug Reports			
 
