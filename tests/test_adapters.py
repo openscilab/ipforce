@@ -7,12 +7,13 @@ from ipforce.adapters import IPv4TransportAdapter, IPv6TransportAdapter
 class TestIPv4Adapter(unittest.TestCase):
     """Test cases for IPv4TransportAdapter."""
 
-    def setUp(self):
+    def set_up(self):
         """Set up test fixtures."""
         self.adapter = IPv4TransportAdapter()
 
     def test_ipv4_filtering_during_send(self):
         """Test that IPv4 adapter filters only IPv4 addresses during send."""
+        self.set_up()
         mock_results = [
             (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('192.168.1.1', 80)),  # IPv4
             (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', 80)),         # IPv6
@@ -38,6 +39,7 @@ class TestIPv4Adapter(unittest.TestCase):
 
     def test_cleanup_after_send(self):
         """Test that the adapter properly restores original getaddrinfo after send."""
+        self.set_up()
         original_getaddrinfo = socket.getaddrinfo
 
         with patch.object(IPv4TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
@@ -48,6 +50,7 @@ class TestIPv4Adapter(unittest.TestCase):
 
     def test_cleanup_on_exception(self):
         """Test that the adapter restores original getaddrinfo even if send raises."""
+        self.set_up()
         original_getaddrinfo = socket.getaddrinfo
 
         with patch.object(IPv4TransportAdapter.__bases__[0], 'send', side_effect=Exception("Test error")):
@@ -61,12 +64,13 @@ class TestIPv4Adapter(unittest.TestCase):
 class TestIPv6Adapter(unittest.TestCase):
     """Test cases for IPv6TransportAdapter."""
 
-    def setUp(self):
+    def set_up(self):
         """Set up test fixtures."""
         self.adapter = IPv6TransportAdapter()
 
     def test_ipv6_filtering_during_send(self):
         """Test that IPv6 adapter filters only IPv6 addresses during send."""
+        self.set_up()
         mock_results = [
             (socket.AF_INET, socket.SOCK_STREAM, 6, '', ('192.168.1.1', 80)),  # IPv4
             (socket.AF_INET6, socket.SOCK_STREAM, 6, '', ('::1', 80)),         # IPv6
@@ -91,6 +95,7 @@ class TestIPv6Adapter(unittest.TestCase):
 
     def test_cleanup_after_send(self):
         """Test that the adapter properly restores original getaddrinfo after send."""
+        self.set_up()
         original_getaddrinfo = socket.getaddrinfo
 
         with patch.object(IPv6TransportAdapter.__bases__[0], 'send', return_value=MagicMock()):
@@ -101,6 +106,7 @@ class TestIPv6Adapter(unittest.TestCase):
 
     def test_cleanup_on_exception(self):
         """Test that the adapter restores original getaddrinfo even if send raises."""
+        self.set_up()
         original_getaddrinfo = socket.getaddrinfo
 
         with patch.object(IPv6TransportAdapter.__bases__[0], 'send', side_effect=Exception("Test error")):
