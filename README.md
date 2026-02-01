@@ -93,9 +93,8 @@ session.mount('https://', IPv6TransportAdapter())
 response = session.get('https://ifconfig.co/json')
 ```
 
-### ⚠️ Important: Thread Safety Warning
-
-**Current adapters are NOT thread-safe!** They modify the global `socket.getaddrinfo` function, which can cause issues in multi-threaded applications.
+> [!WARNING]
+> Current adapters are NOT thread-safe! They modify the global `socket.getaddrinfo` function, which can cause issues in multi-threaded applications.
 
 ## Issues & Bug Reports			
 
