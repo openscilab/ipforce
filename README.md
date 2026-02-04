@@ -8,10 +8,10 @@
 <a href="https://discord.gg/TODO"><img src="https://img.shields.io/discord/TODO" alt="Discord Channel"></a>
 </div>			
 				
-## Overview	
+## Overview
 
 <p align="justify">					
-<b>IPForce</b> is a Python library for TODO.
+<b>IPForce</b> is a Python library that provides HTTP adapters for forcing specific IP protocol versions (IPv4 or IPv6) during HTTP requests. It's particularly useful for testing network connectivity, ensuring compatibility with specific network configurations, and controlling which IP protocol version is used for DNS resolution and connections.
 </p>
 
 <table>
@@ -55,16 +55,46 @@
 - `pip install .`				
 
 ### PyPI
-
 - Check [Python Packaging User Guide](https://packaging.python.org/installing/)     
 - `pip install ipforce==0.1`						
 
-
 ## Usage
+### Enforce IPv4
 
-### Library
+Use when you need to ensure connections only use IPv4 addresses, useful for legacy systems that don't support IPv6, networks with IPv4-only infrastructure, or testing IPv4 connectivity.
 
-#### Enforce IPv4
+```python
+import requests
+from ipforce import IPv4TransportAdapter
+
+# Create a session that will only use IPv4 addresses
+session = requests.Session()
+session.mount('http://', IPv4TransportAdapter())
+session.mount('https://', IPv4TransportAdapter())
+
+# All requests through this session will only resolve to IPv4 addresses
+response = session.get('https://ifconfig.co/json')
+```
+
+### Enforce IPv6
+
+Use when you need to ensure connections only use IPv6 addresses, useful for modern networks with IPv6 infrastructure, testing IPv6 connectivity, or applications requiring IPv6-specific features.
+
+```python
+import requests
+from ipforce import IPv6TransportAdapter
+
+# Create a session that will only use IPv6 addresses
+session = requests.Session()
+session.mount('http://', IPv6TransportAdapter())
+session.mount('https://', IPv6TransportAdapter())
+
+# All requests through this session will only resolve to IPv6 addresses
+response = session.get('https://ifconfig.co/json')
+```
+
+> [!WARNING]
+> Current adapters are NOT thread-safe! They modify the global `socket.getaddrinfo` function, which can cause issues in multi-threaded applications.
 
 ## Issues & Bug Reports			
 

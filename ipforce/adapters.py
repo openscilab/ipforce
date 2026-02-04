@@ -1,61 +1,65 @@
+# -*- coding: utf-8 -*-
+"""IPForce Adapters to force IPv4 or IPv6 for requests."""
 import socket
-from typing import List, Tuple
-from urllib3 import PoolManager
+from typing import Any, List, Tuple
 from requests.adapters import HTTPAdapter
-from requests.sessions import Session
 
-class IPv4HTTPAdapter(HTTPAdapter):
+
+class IPv4TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv4 for DNS resolution during HTTP(S) requests using the requests library."""
 
-    def init_poolmanager(self, connections: int, maxsize: int, block: bool = False, **kwargs: dict) -> None:
+    def send(self, *args: list, **kwargs: dict) -> Any:
         """
-        Initialize the connection pool manager using a temporary override of socket.getaddrinfo to ensure only IPv4 addresses are used.
-        This is necessary to ensure that the requests library uses IPv4 addresses for DNS resolution, which is required for some APIs.
-        :param connections: the number of connection pools to cache
-        :param maxsize: the maximum number of connections to save in the pool
-        :param block: whether the connections should block when reaching the max size
-        :param kwargs: additional keyword arguments for the PoolManager
-        """
-        self.poolmanager = PoolManager(
-            num_pools=connections,
-            maxsize=maxsize,
-            block=block,
-            socket_options=self._ipv4_socket_options(),
-            **kwargs
-        )
+        Override send method to apply the monkey patch only during the request.
 
-    def _ipv4_socket_options(self) -> list:
-        """
-        Temporarily patches socket.getaddrinfo to filter only IPv4 addresses (AF_INET).
-
-        :return: an empty list of socket options; DNS patching occurs here
+        :param args: additional list arguments for the send method
+        :param kwargs: additional keyword arguments for the send method
         """
         original_getaddrinfo = socket.getaddrinfo
 
-        def ipv4_only_getaddrinfo(*args: list, **kwargs: dict) -> List[Tuple]:
-            results = original_getaddrinfo(*args, **kwargs)
+        def ipv4_only_getaddrinfo(*gargs: list, **gkwargs: dict) -> List[Tuple]:
+            """
+            Filter getaddrinfo to return only IPv4 addresses.
+
+            :param gargs: additional list arguments for the original_getaddrinfo function
+            :param gkwargs: additional keyword arguments for the original_getaddrinfo function
+            """
+            results = original_getaddrinfo(*gargs, **gkwargs)
             return [res for res in results if res[0] == socket.AF_INET]
 
-        self._original_getaddrinfo = socket.getaddrinfo
         socket.getaddrinfo = ipv4_only_getaddrinfo
+        try:
+            response = super().send(*args, **kwargs)
+        finally:
+            socket.getaddrinfo = original_getaddrinfo
+        return response
 
-        return []
 
-    def __del__(self) -> None:
-        """Restores the original socket.getaddrinfo function upon adapter deletion."""
-        if hasattr(self, "_original_getaddrinfo"):
-            socket.getaddrinfo = self._original_getaddrinfo
+class IPv6TransportAdapter(HTTPAdapter):
+    """A custom HTTPAdapter that enforces the use of IPv6 for DNS resolution during HTTP(S) requests using the requests library."""
 
-    @staticmethod
-    def get_ipv4_enforced_session() -> Session:
+    def send(self, *args: list, **kwargs: dict) -> Any:
         """
-        Returns a requests.Session with IPv4HTTPAdapter mounted for both HTTP and HTTPS.
-        All requests made with this session will use IPv4 for DNS resolution.
+        Override send method to apply the monkey patch only during the request.
 
-        :return: requests.Session object with IPv4 enforced
+        :param args: additional list arguments for the send method
+        :param kwargs: additional keyword arguments for the send method
         """
-        session = Session()
-        adapter = IPv4HTTPAdapter()
-        session.mount("http://", adapter)
-        session.mount("https://", adapter)
-        return session
+        original_getaddrinfo = socket.getaddrinfo
+
+        def ipv6_only_getaddrinfo(*gargs: list, **gkwargs: dict) -> List[Tuple]:
+            """
+            Filter getaddrinfo to return only IPv6 addresses.
+
+            :param gargs: additional list arguments for the original_getaddrinfo function
+            :param gkwargs: additional keyword arguments for the original_getaddrinfo function
+            """
+            results = original_getaddrinfo(*gargs, **gkwargs)
+            return [res for res in results if res[0] == socket.AF_INET6]
+
+        socket.getaddrinfo = ipv6_only_getaddrinfo
+        try:
+            response = super().send(*args, **kwargs)
+        finally:
+            socket.getaddrinfo = original_getaddrinfo
+        return response
