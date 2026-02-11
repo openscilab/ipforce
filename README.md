@@ -4,6 +4,7 @@
 <a href="https://badge.fury.io/py/ipforce"><img src="https://badge.fury.io/py/ipforce.svg" alt="PyPI version"></a>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/openscilab/ipforce"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/openscilab/ipforce"></a>
+<a href="https://codecov.io/gh/openscilab/ipforce"><img src="https://codecov.io/gh/openscilab/ipforce/graph/badge.svg?token=8EJBSMPZF1"></a>
 </div>			
 				
 ## Overview
