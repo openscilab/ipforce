@@ -33,7 +33,7 @@ setup(
     name='ipforce',
     packages=['ipforce'],
     version='0.1',
-    description='IPForce: Force IPv4 or IPv6 in Python HTTP Requests',
+    description='IPForce: Force IPv4/IPv6 in Python HTTP Requests',
     long_description=read_description(),
     long_description_content_type='text/markdown',
     include_package_data=True,
