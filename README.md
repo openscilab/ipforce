@@ -1,11 +1,9 @@
 <div align="center">
-<img src="https://github.com/openscilab/ipforce/raw/main/otherfiles/logo.png" width="350">
-<h1>IPForce: TODO</h1>
+<h1>IPForce: Force IPv4/IPv6 in Python HTTP Requests</h1>
 <br/>
 <a href="https://badge.fury.io/py/ipforce"><img src="https://badge.fury.io/py/ipforce.svg" alt="PyPI version"></a>
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/openscilab/ipforce"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/openscilab/ipforce"></a>
-<a href="https://discord.gg/TODO"><img src="https://img.shields.io/discord/TODO" alt="Discord Channel"></a>
 </div>			
 				
 ## Overview
@@ -102,11 +100,6 @@ Just fill an issue and describe it. We'll check it ASAP!
 
 - Please complete the issue template
 
-You can also join our discord server
-
-<a href="https://discord.gg/TODO">
-  <img src="https://img.shields.io/discord/TODO.svg?style=for-the-badge" alt="Discord Channel">
-</a>
 
 ## Show Your Support
 								
