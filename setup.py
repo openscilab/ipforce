@@ -24,14 +24,16 @@ def read_description() -> str:
             description += c.read()
         return description
     except Exception:
-        return '''TODO'''
+        return '''IPForce is a Python library that provides HTTP adapters for forcing specific IP protocol versions (IPv4 or IPv6) during HTTP requests.
+                It's particularly useful for testing network connectivity, ensuring compatibility with specific network configurations,
+                and controlling which IP protocol version is used for DNS resolution and connections.'''
 
 
 setup(
     name='ipforce',
     packages=['ipforce'],
     version='0.1',
-    description='TODO',
+    description='IPForce: Force IPv4 or IPv6 in Python HTTP Requests',
     long_description=read_description(),
     long_description_content_type='text/markdown',
     include_package_data=True,
@@ -39,7 +41,7 @@ setup(
     author_email='ipforce@openscilab.com',
     url='https://github.com/openscilab/ipforce',
     download_url='https://github.com/openscilab/ipforce/tarball/v0.1',
-    keywords="ip ipv4 adapter",
+    keywords="http ipv4 ipv6 network requests adapter dns socket protocol ip-force",
     project_urls={
         'Source': 'https://github.com/openscilab/ipforce'
     },
@@ -57,11 +59,14 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
-        'Intended Audience :: End Users/Desktop',
         'Topic :: System :: Networking',
         'Topic :: Utilities',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: HTTP Clients',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     license='MIT',
 )
