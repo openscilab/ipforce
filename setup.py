@@ -65,7 +65,6 @@ setup(
         'Topic :: System :: Networking',
         'Topic :: Utilities',
         'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: HTTP Clients',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     license='MIT',
