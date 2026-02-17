@@ -5,6 +5,7 @@
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3"></a>
 <a href="https://github.com/openscilab/ipforce"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/openscilab/ipforce"></a>
 <a href="https://codecov.io/gh/openscilab/ipforce"><img src="https://codecov.io/gh/openscilab/ipforce/graph/badge.svg?token=8EJBSMPZF1"></a>
+<a href="https://discord.gg/hTPdYK2Qg5"><img src="https://img.shields.io/discord/1064533716615049236.svg" alt="Discord Channel"></a>
 </div>			
 				
 ## Overview
@@ -100,6 +101,12 @@ response = session.get('https://ifconfig.co/json')
 Just fill an issue and describe it. We'll check it ASAP!
 
 - Please complete the issue template
+
+You can also join our discord server
+
+<a href="https://discord.gg/hTPdYK2Qg5">
+  <img src="https://img.shields.io/discord/1064533716615049236.svg?style=for-the-badge" alt="Discord Channel">
+</a>
 
 
 ## Show Your Support
