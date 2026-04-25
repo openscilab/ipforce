@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/openscilab/ipforce/raw/logo/otherfiles/logo.png" alt="IPForce Logo" width="350">
+<img src="https://github.com/openscilab/ipforce/raw/main/otherfiles/logo.png" alt="IPForce Logo" width="350">
 <h1>IPForce: Force IPv4/IPv6 in Python HTTP Requests</h1>
 <br/>
 <a href="https://badge.fury.io/py/ipforce"><img src="https://badge.fury.io/py/ipforce.svg" alt="PyPI version"></a>
