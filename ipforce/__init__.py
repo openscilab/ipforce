@@ -6,6 +6,7 @@ from .adapters import IPv4LockAdapter, IPv6LockAdapter
 
 __version__ = IPFORCE_VERSION
 
+__all__ = [
     "IPv4TransportAdapter", "IPv6TransportAdapter",
     "IPv4LockAdapter", "IPv6LockAdapter",
 ]
