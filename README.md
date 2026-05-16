@@ -95,7 +95,22 @@ response = session.get('https://ifconfig.co/json')
 ```
 
 > [!WARNING]
-> Current adapters are NOT thread-safe! They modify the global `socket.getaddrinfo` function, which can cause issues in multi-threaded applications.
+> `IPv4TransportAdapter` / `IPv6TransportAdapter` are NOT thread-safe. They modify the global `socket.getaddrinfo` function, which can cause race conditions in multi-threaded applications. Use the thread-safe adapters below for concurrent usage.
+
+### Thread-Safe: Lock-Based Adapters
+
+A process-wide lock serializes access to `socket.getaddrinfo`, guaranteeing correctness under concurrent access.
+
+```python
+import requests
+from ipforce import IPv4LockAdapter, IPv6LockAdapter
+
+session = requests.Session()
+session.mount('http://', IPv4LockAdapter()) # or IPv6LockAdapter()
+session.mount('https://', IPv4LockAdapter()) # or IPv6LockAdapter()
+
+response = session.get('https://ifconfig.co/json')
+```
 
 ## Issues & Bug Reports			
 
