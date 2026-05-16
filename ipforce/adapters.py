@@ -3,6 +3,11 @@
 import socket
 from typing import Any, List, Tuple
 from requests.adapters import HTTPAdapter
+from threading import Lock
+
+# ============================================================================
+# Base adapter (not thread-safe)
+# ============================================================================
 
 
 class IPv4TransportAdapter(HTTPAdapter):
@@ -63,3 +68,66 @@ class IPv6TransportAdapter(HTTPAdapter):
         finally:
             socket.getaddrinfo = original_getaddrinfo
         return response
+
+
+# ============================================================================
+# Lock-based thread-safe adapters
+#
+# A process-wide lock serializes access to the global socket.getaddrinfo
+# patch. Correct under all conditions, but serializes DNS resolution
+# across threads.
+# ============================================================================
+
+_adapter_lock = Lock()
+
+
+class _BaseLockAdapter(HTTPAdapter):
+    """Base class for lock-based thread-safe adapters."""
+
+    _family = socket.AF_UNSPEC
+
+    def send(self, *args: list, **kwargs: dict) -> Any:
+        """
+        Thread-safe send that acquires a lock before patching getaddrinfo.
+
+        :param args: additional list arguments for the send method
+        :param kwargs: additional keyword arguments for the send method
+        """
+        with _adapter_lock:
+            original_getaddrinfo = socket.getaddrinfo
+            family = self._family
+
+            def filtered_getaddrinfo(*gargs: list, **gkwargs: dict) -> List[Tuple]:
+                """Filter getaddrinfo results to the target address family."""
+                results = original_getaddrinfo(*gargs, **gkwargs)
+                return [r for r in results if r[0] == family]
+
+            socket.getaddrinfo = filtered_getaddrinfo
+            try:
+                return super().send(*args, **kwargs)
+            finally:
+                socket.getaddrinfo = original_getaddrinfo
+
+
+class IPv4LockAdapter(_BaseLockAdapter):
+    """Thread-safe HTTPAdapter that enforces IPv4 using a global lock.
+
+    All requests across all threads are serialized through a single lock,
+    ensuring no race conditions on socket.getaddrinfo. Best suited for
+    low-concurrency use cases where simplicity is preferred.
+    """
+
+    _family = socket.AF_INET
+
+
+class IPv6LockAdapter(_BaseLockAdapter):
+    """Thread-safe HTTPAdapter that enforces IPv6 using a global lock.
+
+    All requests across all threads are serialized through a single lock,
+    ensuring no race conditions on socket.getaddrinfo. Best suited for
+    low-concurrency use cases where simplicity is preferred.
+    """
+
+    _family = socket.AF_INET6
+
+
