@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- `IPv6LockAdapter` class
+- `IPv4LockAdapter` class
 - Logo
 ### Changed
 - `README.md` updated
