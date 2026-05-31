@@ -98,7 +98,11 @@ class _BaseLockAdapter(HTTPAdapter):
             family = self._family
 
             def filtered_getaddrinfo(*gargs: list, **gkwargs: dict) -> List[Tuple]:
-                """Filter getaddrinfo results to the target address family."""
+                """Filter getaddrinfo results to the target address family.
+
+                :param gargs: additional list arguments for the original_getaddrinfo function
+                :param gkwargs: additional keyword arguments for the original_getaddrinfo function
+                """
                 results = original_getaddrinfo(*gargs, **gkwargs)
                 return [r for r in results if r[0] == family]
 
