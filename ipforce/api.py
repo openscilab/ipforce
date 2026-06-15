@@ -46,6 +46,11 @@ class IPForceSession(Session):
         ip_version: IPVersion,
         method: IPForceMethod = IPForceMethod.LOCK,
     ) -> None:
+        """Initialize the session with an IP-version-forced adapter.
+
+        :param ip_version: IPVersion.V4 or IPVersion.V6
+        :param method: thread-safety strategy (default: LOCK)
+        """
         super().__init__()
         adapter = IPForceAdapter(ip_version, method)
         self.mount('http://', adapter)

@@ -15,6 +15,7 @@ class IPv4TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv4 for DNS resolution during HTTP(S) requests using the requests library."""
 
     def __init__(self, *args, **kwargs) -> None:
+        """Initialize the adapter and emit a deprecation warning."""
         warnings.warn(
             "IPv4TransportAdapter is deprecated, use IPForceAdapter(IPVersion.V4, IPForceMethod.GLOBAL) instead",
             DeprecationWarning,
@@ -53,6 +54,7 @@ class IPv6TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv6 for DNS resolution during HTTP(S) requests using the requests library."""
 
     def __init__(self, *args, **kwargs) -> None:
+        """Initialize the adapter and emit a deprecation warning."""
         warnings.warn(
             "IPv6TransportAdapter is deprecated, use IPForceAdapter(IPVersion.V6, IPForceMethod.GLOBAL) instead",
             DeprecationWarning,
