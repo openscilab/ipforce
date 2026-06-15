@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `IPForceSession` unified session class
 - `IPVersion` enum (`V4`, `V6`)
 - `IPForceMethod` enum (`GLOBAL`, `LOCK`)
-- `IPv4LockAdapter` / `IPv6LockAdapter` thread-safe adapter classes
+- `IPv6LockAdapter` class
+- `IPv4LockAdapter` class
 - Logo
 ### Changed
 - `README.md` updated
