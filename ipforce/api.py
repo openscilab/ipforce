@@ -23,7 +23,8 @@ def IPForceAdapter(
     ip_version: IPVersion,
     method: IPForceMethod = IPForceMethod.LOCK,
 ) -> HTTPAdapter:
-    """Create an HTTP adapter that forces a specific IP version.
+    """
+    Create an HTTP adapter that forces a specific IP version.
 
     :param ip_version: IPVersion.V4 or IPVersion.V6
     :param method: thread-safety strategy (default: LOCK)
@@ -46,7 +47,8 @@ class IPForceSession(Session):
         ip_version: IPVersion,
         method: IPForceMethod = IPForceMethod.LOCK,
     ) -> None:
-        """Initialize the session with an IP-version-forced adapter.
+        """
+        Initialize the session with an IP-version-forced adapter.
 
         :param ip_version: IPVersion.V4 or IPVersion.V6
         :param method: thread-safety strategy (default: LOCK)
