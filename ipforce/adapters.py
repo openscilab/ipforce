@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """IPForce Adapters to force IPv4 or IPv6 for requests."""
 import socket
+import warnings
 from typing import Any, List, Tuple
 from requests.adapters import HTTPAdapter
 from threading import Lock
@@ -12,6 +13,14 @@ from threading import Lock
 
 class IPv4TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv4 for DNS resolution during HTTP(S) requests using the requests library."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        warnings.warn(
+            "IPv4TransportAdapter is deprecated, use IPForceAdapter(IPVersion.V4, IPForceMethod.GLOBAL) instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
     def send(self, *args: list, **kwargs: dict) -> Any:
         """
@@ -42,6 +51,14 @@ class IPv4TransportAdapter(HTTPAdapter):
 
 class IPv6TransportAdapter(HTTPAdapter):
     """A custom HTTPAdapter that enforces the use of IPv6 for DNS resolution during HTTP(S) requests using the requests library."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        warnings.warn(
+            "IPv6TransportAdapter is deprecated, use IPForceAdapter(IPVersion.V6, IPForceMethod.GLOBAL) instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
     def send(self, *args: list, **kwargs: dict) -> Any:
         """
