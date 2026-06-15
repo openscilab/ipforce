@@ -62,6 +62,7 @@
 ## Usage
 
 ### Enforce IPv4
+Use when you need to ensure connections only use IPv4 addresses, useful for legacy systems that don't support IPv6, networks with IPv4-only infrastructure, or testing IPv4 connectivity.
 
 ```python
 from ipforce import IPForceAdapter, IPVersion, IPForceMethod
@@ -76,6 +77,7 @@ response = session.get('https://ifconfig.co/json')
 ```
 
 ### Enforce IPv6
+Use when you need to ensure connections only use IPv6 addresses, useful for modern networks with IPv6 infrastructure, testing IPv6 connectivity, or applications requiring IPv6-specific features.
 
 ```python
 from ipforce import IPForceAdapter, IPVersion, IPForceMethod
@@ -113,11 +115,12 @@ with IPForceSession(IPVersion.V4) as session:
 The following direct class usage still works but is deprecated in favor of the unified API above:
 
 ```python
-from ipforce import IPv4TransportAdapter
+from ipforce import IPv4LockAdapter, IPv6LockAdapter
 
 session = requests.Session()
-session.mount('http://', IPv4TransportAdapter())
-session.mount('https://', IPv4TransportAdapter())
+session.mount('http://', IPv4LockAdapter()) # or IPv6LockAdapter()
+session.mount('https://', IPv4LockAdapter()) # or IPv6LockAdapter()
+response = session.get('https://ifconfig.co/json')
 ```
 
 ### Roadmap
