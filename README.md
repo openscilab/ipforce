@@ -18,7 +18,7 @@
 <table>
 	<tr>
 		<td align="center">PyPI Counter</td>
-		<td align="center"><a href="http://pepy.tech/project/ipforce"><img src="http://pepy.tech/badge/ipforce"></a></td>
+		<td align="center"><a href="http://pepy.tech/project/ipforce"><img src="https://static.pepy.tech/personalized-badge/ipforce?period=total&units=INTERNATIONAL_SYSTEM&left_color=GREY&right_color=BLUE&left_text=downloads"></a></td>
 	</tr>
 	<tr>
 		<td align="center">Github Stars</td>
@@ -43,7 +43,7 @@
 <table>
 	<tr> 
 		<td align="center">Code Quality</td>
-		<td align="center"><a href="https://app.codacy.com/gh/openscilab/ipforce/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/cb2ab6584eb443b8a33da4d4252480bc"/></a></td>
+		<td align="center"><a href="https://app.codacy.com/gh/openscilab/ipforce/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/16eb5d38472c4645b012e8f8f14c8442"/></a></td>
 		<td align="center"><a href="https://www.codefactor.io/repository/github/openscilab/ipforce"><img src="https://www.codefactor.io/repository/github/openscilab/ipforce/badge" alt="CodeFactor"></a></td>
 	</tr>
 </table>
@@ -60,57 +60,74 @@
 - `pip install ipforce==0.1`						
 
 ## Usage
+
 ### Enforce IPv4
 
-Use when you need to ensure connections only use IPv4 addresses, useful for legacy systems that don't support IPv6, networks with IPv4-only infrastructure, or testing IPv4 connectivity.
-
 ```python
+from ipforce import IPForceAdapter, IPVersion, IPForceMethod
 import requests
-from ipforce import IPv4TransportAdapter
 
-# Create a session that will only use IPv4 addresses
 session = requests.Session()
-session.mount('http://', IPv4TransportAdapter())
-session.mount('https://', IPv4TransportAdapter())
+adapter = IPForceAdapter(IPVersion.V4, IPForceMethod.LOCK)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
 
-# All requests through this session will only resolve to IPv4 addresses
 response = session.get('https://ifconfig.co/json')
 ```
 
 ### Enforce IPv6
 
-Use when you need to ensure connections only use IPv6 addresses, useful for modern networks with IPv6 infrastructure, testing IPv6 connectivity, or applications requiring IPv6-specific features.
-
 ```python
+from ipforce import IPForceAdapter, IPVersion, IPForceMethod
 import requests
-from ipforce import IPv6TransportAdapter
 
-# Create a session that will only use IPv6 addresses
 session = requests.Session()
-session.mount('http://', IPv6TransportAdapter())
-session.mount('https://', IPv6TransportAdapter())
+adapter = IPForceAdapter(IPVersion.V6, IPForceMethod.LOCK)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
 
-# All requests through this session will only resolve to IPv6 addresses
 response = session.get('https://ifconfig.co/json')
 ```
+
+### Using IPForceSession
+
+```python
+from ipforce import IPForceSession, IPVersion
+
+with IPForceSession(IPVersion.V4) as session:
+    response = session.get('https://ifconfig.co/json')
+```
+
+### Available Methods
+
+| Method | Description |
+|--------|-------------|
+| `IPForceMethod.LOCK` | Thread-safe — global lock serialization (default) |
+| `IPForceMethod.GLOBAL` | Non-thread-safe — temporary getaddrinfo patch |
 
 > [!WARNING]
-> `IPv4TransportAdapter` / `IPv6TransportAdapter` are NOT thread-safe. They modify the global `socket.getaddrinfo` function, which can cause race conditions in multi-threaded applications. Use the thread-safe adapters below for concurrent usage.
+> `IPForceMethod.GLOBAL` is NOT thread-safe. It modifies the global `socket.getaddrinfo` function, which can cause race conditions in multi-threaded applications. Use `IPForceMethod.LOCK` (the default) for concurrent usage.
 
-### Thread-Safe: Lock-Based Adapters
+### Direct Class Usage (Deprecated)
 
-A process-wide lock serializes access to `socket.getaddrinfo`, guaranteeing correctness under concurrent access.
+The following direct class usage still works but is deprecated in favor of the unified API above:
 
 ```python
-import requests
-from ipforce import IPv4LockAdapter, IPv6LockAdapter
+from ipforce import IPv4TransportAdapter
 
 session = requests.Session()
-session.mount('http://', IPv4LockAdapter()) # or IPv6LockAdapter()
-session.mount('https://', IPv4LockAdapter()) # or IPv6LockAdapter()
-
-response = session.get('https://ifconfig.co/json')
+session.mount('http://', IPv4TransportAdapter())
+session.mount('https://', IPv4TransportAdapter())
 ```
+
+### Roadmap
+
+| Method | Description |
+|--------|-------------|
+| `IPForceMethod.THREAD_LOCAL` | Per-thread dispatch (fully concurrent) |
+| `IPForceMethod.CONTEXT_VAR` | ContextVar dispatch (async-safe) |
+| `IPForceMethod.CONNECTION` | urllib3 connection-level (zero global state) |
+| `IPForceMethod.AUTO` | Automatically select best available |
 
 ## Issues & Bug Reports			
 
