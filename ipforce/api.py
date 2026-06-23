@@ -29,7 +29,6 @@ def IPForceAdapter(
     :param ip_version: IPVersion.V4 or IPVersion.V6
     :param method: thread-safety strategy (default: LOCK)
     :return: configured HTTPAdapter instance
-    :raises ValueError: if the (ip_version, method) combination is not registered
     """
     adapter_cls = _ADAPTER_REGISTRY.get((ip_version, method))
     if adapter_cls is None:
