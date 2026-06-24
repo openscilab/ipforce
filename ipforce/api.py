@@ -5,7 +5,7 @@ import warnings
 from requests import Session
 from requests.adapters import HTTPAdapter
 
-from .enums import IPVersion, IPForceMethod
+from .params import IPVersion, IPForceMethod
 from .adapters import (
     IPv4TransportAdapter, IPv6TransportAdapter,
     IPv4LockAdapter, IPv6LockAdapter,

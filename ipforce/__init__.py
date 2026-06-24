@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """ipforce modules."""
-from .params import IPFORCE_VERSION
-from .enums import IPVersion, IPForceMethod
+from .params import IPFORCE_VERSION, IPVersion, IPForceMethod
 from .api import IPForceAdapter, IPForceSession
 from .adapters import IPv4TransportAdapter, IPv6TransportAdapter
 from .adapters import IPv4LockAdapter, IPv6LockAdapter
