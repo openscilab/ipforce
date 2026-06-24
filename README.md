@@ -123,15 +123,6 @@ session.mount('https://', IPv4LockAdapter()) # or IPv6LockAdapter()
 response = session.get('https://ifconfig.co/json')
 ```
 
-### Roadmap
-
-| Method | Description |
-|--------|-------------|
-| `IPForceMethod.THREAD_LOCAL` | Per-thread dispatch (fully concurrent) |
-| `IPForceMethod.CONTEXT_VAR` | ContextVar dispatch (async-safe) |
-| `IPForceMethod.CONNECTION` | urllib3 connection-level (zero global state) |
-| `IPForceMethod.AUTO` | Automatically select best available |
-
 ## Issues & Bug Reports			
 
 Just fill an issue and describe it. We'll check it ASAP!
