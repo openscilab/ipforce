@@ -36,10 +36,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install .
-    - name: Install dev-requirements
+    - name: Dev requirements installation
       run: |
-        python otherfiles/requirements-splitter.py
-        pip install --upgrade --upgrade-strategy=only-if-needed -r test-requirements.txt
+        pip install --upgrade --upgrade-strategy=only-if-needed -r requirements-dev.txt
     - name: Test with pytest 
       run: |
         python -m pytest tests/ --cov=ipforce --cov-report=term --ignore=tests/test_ipv4.py --ignore=tests/test_ipv6.py
