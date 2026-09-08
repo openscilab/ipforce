@@ -2,7 +2,7 @@
 """ipforce params."""
 from enum import Enum
 
-IPFORCE_VERSION = "0.1"
+IPFORCE_VERSION = "0.2"
 IPFORCE_OVERVIEW = '''OVERVIEW'''
 IPFORCE_REPO = "https://github.com/openscilab/ipforce"
 
