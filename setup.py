@@ -21,7 +21,7 @@ def read_description() -> str:
 setup(
     name='ipforce',
     packages=['ipforce'],
-    version='0.1',
+    version='0.2',
     description='IPForce: Force IPv4/IPv6 in Python HTTP Requests',
     long_description=read_description(),
     long_description_content_type='text/markdown',
@@ -29,7 +29,7 @@ setup(
     author='IPForce Development Team',
     author_email='ipforce@openscilab.com',
     url='https://github.com/openscilab/ipforce',
-    download_url='https://github.com/openscilab/ipforce/tarball/v0.1',
+    download_url='https://github.com/openscilab/ipforce/tarball/v0.2',
     keywords='http ipv4 ipv6 network requests adapter dns socket protocol ip-force',
     project_urls={
         'Source': 'https://github.com/openscilab/ipforce'
