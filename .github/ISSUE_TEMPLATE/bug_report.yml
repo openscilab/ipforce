@@ -84,6 +84,7 @@ body:
       label: IPForce version
       description: Which version of IPForce are you using?
       options:
+        - IPForce 0.1      
         - IPForce 0.2
       default: 0
     validations:
