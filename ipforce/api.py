@@ -9,6 +9,7 @@ from .params import IPVersion, IPForceMethod
 from .adapters import (
     IPv4TransportAdapter, IPv6TransportAdapter,
     IPv4LockAdapter, IPv6LockAdapter,
+    IPv4ThreadLocalAdapter, IPv6ThreadLocalAdapter,
 )
 
 _ADAPTER_REGISTRY = {
@@ -16,6 +17,8 @@ _ADAPTER_REGISTRY = {
     (IPVersion.V6, IPForceMethod.GLOBAL): IPv6TransportAdapter,
     (IPVersion.V4, IPForceMethod.LOCK): IPv4LockAdapter,
     (IPVersion.V6, IPForceMethod.LOCK): IPv6LockAdapter,
+    (IPVersion.V4, IPForceMethod.THREAD_LOCAL): IPv4ThreadLocalAdapter,
+    (IPVersion.V6, IPForceMethod.THREAD_LOCAL): IPv6ThreadLocalAdapter,
 }
 
 
