@@ -19,3 +19,4 @@ class IPForceMethod(Enum):
 
     GLOBAL = "global"
     LOCK = "lock"
+    THREAD_LOCAL = "thread_local"

@@ -4,6 +4,7 @@ from .params import IPFORCE_VERSION, IPVersion, IPForceMethod
 from .api import IPForceAdapter, IPForceSession
 from .adapters import IPv4TransportAdapter, IPv6TransportAdapter
 from .adapters import IPv4LockAdapter, IPv6LockAdapter
+from .adapters import IPv4ThreadLocalAdapter, IPv6ThreadLocalAdapter
 
 __version__ = IPFORCE_VERSION
 
@@ -12,4 +13,5 @@ __all__ = [
     "IPForceAdapter", "IPForceSession",
     "IPv4TransportAdapter", "IPv6TransportAdapter",
     "IPv4LockAdapter", "IPv6LockAdapter",
+    "IPv4ThreadLocalAdapter", "IPv6ThreadLocalAdapter",
 ]
