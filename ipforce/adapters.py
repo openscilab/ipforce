@@ -169,7 +169,13 @@ _tl_install_lock = Lock()
 
 
 def _tl_dispatching_getaddrinfo(*args: list, **kwargs: dict) -> List[Tuple]:
-    """Dispatch getaddrinfo through thread-local family filter."""
+    """
+    Dispatch getaddrinfo, filtering results by the current thread's family filter.
+
+    :param args: additional list arguments for the original getaddrinfo function
+    :param kwargs: additional keyword arguments for the original getaddrinfo function
+    :return: getaddrinfo results, filtered to the thread-local family when set
+    """
     results = _tl_original_getaddrinfo(*args, **kwargs)
     family_filter = getattr(_tl_storage, 'family_filter', None)
     if family_filter is not None:
