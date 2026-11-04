@@ -105,6 +105,7 @@ with IPForceSession(IPVersion.V4) as session:
 | Method | Description |
 |--------|-------------|
 | `IPForceMethod.LOCK` | Thread-safe — global lock serialization (default) |
+| `IPForceMethod.THREAD_LOCAL` | Thread-safe — per-thread dispatch, fully concurrent |
 | `IPForceMethod.GLOBAL` | Non-thread-safe — temporary getaddrinfo patch |
 
 > [!WARNING]

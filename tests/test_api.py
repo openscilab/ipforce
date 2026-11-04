@@ -10,7 +10,7 @@ from ipforce import (
     IPForceAdapter, IPForceSession,
     IPv4TransportAdapter, IPv6TransportAdapter,
 )
-from ipforce.adapters import _BaseLockAdapter
+from ipforce.adapters import _BaseLockAdapter, _BaseThreadLocalAdapter
 
 
 class TestIPForceAdapterFactory(unittest.TestCase):
@@ -24,6 +24,16 @@ class TestIPForceAdapterFactory(unittest.TestCase):
     def test_v6_lock(self):
         adapter = IPForceAdapter(IPVersion.V6, IPForceMethod.LOCK)
         self.assertIsInstance(adapter, _BaseLockAdapter)
+        self.assertEqual(adapter._family, socket.AF_INET6)
+
+    def test_v4_thread_local(self):
+        adapter = IPForceAdapter(IPVersion.V4, IPForceMethod.THREAD_LOCAL)
+        self.assertIsInstance(adapter, _BaseThreadLocalAdapter)
+        self.assertEqual(adapter._family, socket.AF_INET)
+
+    def test_v6_thread_local(self):
+        adapter = IPForceAdapter(IPVersion.V6, IPForceMethod.THREAD_LOCAL)
+        self.assertIsInstance(adapter, _BaseThreadLocalAdapter)
         self.assertEqual(adapter._family, socket.AF_INET6)
 
     def test_v4_global(self):
@@ -106,3 +116,4 @@ class TestEnums(unittest.TestCase):
     def test_method_values(self):
         self.assertEqual(IPForceMethod.GLOBAL.value, "global")
         self.assertEqual(IPForceMethod.LOCK.value, "lock")
+        self.assertEqual(IPForceMethod.THREAD_LOCAL.value, "thread_local")
