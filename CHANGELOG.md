@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `IPv4ThreadLocalAdapter` class
 - `IPv6ThreadLocalAdapter` class
-- `IPForceMethod.THREAD_LOCAL` method
 ## [0.2] - 2026-09-14
 ### Added
 - `IPForceAdapter` unified factory function
