@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `IPv4ThreadLocalAdapter` class
 - `IPv6ThreadLocalAdapter` class
+### Changed
+- `Python 3.15` added to `test.yml`
 ## [0.2] - 2026-09-14
 ### Added
 - `IPForceAdapter` unified factory function
